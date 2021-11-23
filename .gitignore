@@ -44,4 +44,5 @@ cmake-build-*
 
 installer/io.plotjuggler.application/data
 
+*.swp
 .vscode/

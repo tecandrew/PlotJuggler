@@ -1,5 +1,11 @@
 #include "rlog_parser.hpp"
 
+#include <pwd.h>
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <QDir>
+#include <QString>
 
 RlogMessageParser::RlogMessageParser(const std::string& topic_name, PJ::PlotDataMapRef& plot_data, const bool streaming) :
   MessageParser(topic_name, plot_data), streaming(streaming)
@@ -9,6 +15,29 @@ RlogMessageParser::RlogMessageParser(const std::string& topic_name, PJ::PlotData
   {
     can_dialog_needed = !loadDBC(std::getenv("DBC_NAME"));
   }
+
+
+  // load schema
+  QString schema_path(std::getenv("BASEDIR"));
+
+  if (schema_path.isNull())
+  {
+    schema_path = QDir(getpwuid(getuid())->pw_dir).filePath("openpilot"); // fallback to $HOME/openpilot
+  }
+  schema_path = QDir(schema_path).filePath("cereal/log.capnp");
+  qDebug() << "Loading schema:" << schema_path;
+  schema_path.remove(0, 1);
+
+  // Parse the schema
+  auto fs = kj::newDiskFilesystem();
+  capnp::SchemaParser *schema_parser = new capnp::SchemaParser;
+  this->schema = schema_parser->parseFromDirectory(fs->getRoot(), kj::Path::parse(schema_path.toStdString()), nullptr);
+  this->event_struct_schema = schema.getNested("Event").asStruct();
+}
+
+capnp::StructSchema RlogMessageParser::getSchema()
+{
+  return event_struct_schema;
 }
 
 bool RlogMessageParser::loadDBC(std::string dbc_str)

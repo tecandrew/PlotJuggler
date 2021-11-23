@@ -7,6 +7,8 @@
 #define DYNAMIC_CAPNP  // Do not depend on generated log.capnp.h structure
 #endif
 
+#include <capnp/schema-parser.h>
+
 #include "common.h"
 #include "common_dbc.h"
 
@@ -22,9 +24,13 @@ private:
   bool show_deprecated;
   bool can_dialog_needed = true;
   const bool streaming;
+  capnp::ParsedSchema schema;
+  capnp::StructSchema event_struct_schema;
+
 public:
   RlogMessageParser(const std::string& topic_name, PJ::PlotDataMapRef& plot_data, const bool streaming = false);
 
+  capnp::StructSchema getSchema();
   bool parseMessageCereal(capnp::DynamicStruct::Reader event);
   bool parseMessageImpl(const std::string& topic_name, capnp::DynamicValue::Reader node, double timestamp, bool is_root);
   bool parseCanMessage(const std::string& topic_name, capnp::DynamicList::Reader node, double timestamp);

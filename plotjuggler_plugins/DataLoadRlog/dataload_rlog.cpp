@@ -61,7 +61,7 @@ bool DataLoadRlog::readDataFromFile(FileLoadInfo* fileload_info, PlotDataMapRef&
 
   auto fn = fileload_info->filename;
 
-  // Load file:
+  // Load file
   QByteArray raw;
   if (fn.endsWith(".bz2")){
     raw = read_bz2_file(fn.toStdString().c_str());
@@ -80,22 +80,6 @@ bool DataLoadRlog::readDataFromFile(FileLoadInfo* fileload_info, PlotDataMapRef&
   progress_dialog.setRange(0, max_amsg_size);
   progress_dialog.show();
 
-  QString schema_path(std::getenv("BASEDIR"));
-
-  if(schema_path.isNull())
-  {
-    schema_path = QDir(getpwuid(getuid())->pw_dir).filePath("openpilot"); // fallback to $HOME/openpilot
-  }
-  schema_path = QDir(schema_path).filePath("cereal/log.capnp");
-  schema_path.remove(0, 1);
-  qDebug() << "loading schema from" << schema_path;
-
-  // Parse the schema
-  auto fs = kj::newDiskFilesystem();
-
-  capnp::SchemaParser schema_parser;
-  capnp::ParsedSchema schema = schema_parser.parseFromDirectory(fs->getRoot(), kj::Path::parse(schema_path.toStdString()), nullptr);
-  capnp::StructSchema event_struct_schema = schema.getNested("Event").asStruct();
 
   RlogMessageParser parser("", plot_data);
 
@@ -107,7 +91,7 @@ bool DataLoadRlog::readDataFromFile(FileLoadInfo* fileload_info, PlotDataMapRef&
       capnp::FlatArrayMessageReader *tmsg = new capnp::FlatArrayMessageReader(kj::ArrayPtr(amsg.begin(), cmsg.getEnd()));
       amsg = kj::ArrayPtr(cmsg.getEnd(), amsg.end());
 
-      capnp::DynamicStruct::Reader event = tmsg->getRoot<capnp::DynamicStruct>(event_struct_schema);
+      capnp::DynamicStruct::Reader event = tmsg->getRoot<capnp::DynamicStruct>(parser.getSchema());
 
       parser.parseMessageCereal(event);
     }
