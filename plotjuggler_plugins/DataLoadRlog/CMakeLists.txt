@@ -40,10 +40,10 @@ add_dependencies(DataLoadRlog compile_dbcs  )
 target_link_libraries(DataLoadRlog
   ${Qt5Widgets_LIBRARIES}
   ${Qt5Xml_LIBRARIES}
-  bz2.a
-  capnpc.a
-  capnp.a
-  kj.a
-  plotjuggler_plugin_base)
+  bz2
+  capnpc
+  capnp
+  kj
+  plotjuggler_base)
 
 install(TARGETS DataLoadRlog DESTINATION bin  )
