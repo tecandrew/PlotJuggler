@@ -2,7 +2,6 @@
 
 #include <QDebug>
 #include <QDialog>
-//#include <QElapsedTimer>
 #include <QIntValidator>
 #include <QMessageBox>
 #include <QSettings>
@@ -118,11 +117,9 @@ void DataStreamCereal::shutdown()
 void DataStreamCereal::receiveLoop()
 {
   AlignedBuffer aligned_buf;
-  // QElapsedTimer timer;
 
   while (_running)
   {
-    // timer.start();
     for (auto sock : poller->poll(100))
     {
       while (_running)  // drain socket
@@ -146,10 +143,5 @@ void DataStreamCereal::receiveLoop()
         delete msg;
       }
     }
-
-    // if (timer.elapsed() >= 20)  // if double usual rate (100hz)
-    // {
-    //   qDebug() << "LAG --" << timer.elapsed() << "ms";
-    // }
   }
 }

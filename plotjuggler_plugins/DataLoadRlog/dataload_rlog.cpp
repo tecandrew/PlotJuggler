@@ -88,6 +88,7 @@ bool DataLoadRlog::readDataFromFile(FileLoadInfo* fileload_info, PlotDataMapRef&
   }
   schema_path = QDir(schema_path).filePath("cereal/log.capnp");
   schema_path.remove(0, 1);
+  qDebug() << "loading schema from" << schema_path;
 
   // Parse the schema
   auto fs = kj::newDiskFilesystem();

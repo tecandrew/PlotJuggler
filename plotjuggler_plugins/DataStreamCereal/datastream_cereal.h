@@ -2,10 +2,11 @@
 #include <pwd.h>
 #include <unistd.h>
 
+#include <thread>
+
 #include <capnp/schema-parser.h>
 #include <capnp/serialize-packed.h>
 
-#include <thread>
 #include <QDialog>
 #include <QDir>
 #include <QtPlugin>
