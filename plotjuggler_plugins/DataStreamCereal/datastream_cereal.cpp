@@ -129,7 +129,7 @@ void DataStreamCereal::receiveLoop()
           break;
 
         capnp::FlatArrayMessageReader cmsg(aligned_buf.align(msg));
-        capnp::DynamicStruct::Reader event = cmsg.getRoot<cereal::Event>();
+        capnp::DynamicStruct::Reader event = cmsg.getRoot<capnp::DynamicStruct>(parser.getSchema());
         try
         {
           std::lock_guard<std::mutex> lock(mutex());
