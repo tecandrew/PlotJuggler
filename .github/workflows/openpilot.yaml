@@ -43,11 +43,13 @@ jobs:
         python-version: '3.8.x'
     - name: install dependencies
       run: |
-        brew install cmake zlib bzip2 capnp coreutils glfw libarchive \
-                     libtool llvm openssl qt@5 zeromq protobuf
+        brew install cmake zlib bzip2 capnp \
+                     libtool llvm qt@5 zeromq protobuf
         sudo pip3 install --no-cache-dir -r 3rdparty/opendbc/requirements.txt
     - name: build
-      run: mkdir -p build && cd build && cmake .. && make -j8
+      run: |
+        export PYTHONPATH=$PWD/3rdparty
+        mkdir -p build && cd build && cmake .. && make -j8
     - name: zip plugins
       run: |
         cd build/bin
