@@ -43,16 +43,14 @@ jobs:
         python-version: '3.8.x'
     - name: install dependencies
       run: |
-        brew install cmake zlib bzip2 capnp libtool llvm qt@5 zeromq protobuf
+        brew install cmake bzip2 capnp qt@5 zeromq protobuf
         sudo pip3 install --no-cache-dir -r 3rdparty/opendbc/requirements.txt
     - name: build
       run: |
         export PYTHONPATH=$PWD/3rdparty
         mkdir -p build && cd build && cmake .. && make -j8
     - name: zip plugins
-      run: |
-        cd build/bin
-        $ZIP
+      run: $ZIP
     - name: upload
       #if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
       uses: svenstaro/upload-release-action@v2
