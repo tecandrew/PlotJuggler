@@ -32,6 +32,8 @@ jobs:
   build_mac:
     name: build mac
     runs-on: macOS-latest
+    env:
+      ARCH: "$(uname -m)"
     steps:
     - uses: actions/checkout@v2
       with:
@@ -41,6 +43,7 @@ jobs:
         python-version: '3.8.x'
     - name: setup dependencies
       run: |
+        echo "ARCH: '$ARCH'"
         brew install cmake bzip2 capnp qt@5 zeromq protobuf
         sudo pip3 install --no-cache-dir -r 3rdparty/opendbc/requirements.txt
     - name: build
@@ -55,6 +58,6 @@ jobs:
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: build/bin/plugins.tar.gz
-        asset_name: mac-plugins.tar.gz
+        asset_name: mac-${{ env.ARCH }}-plugins.tar.gz
         tag: "latest"
         overwrite: true
