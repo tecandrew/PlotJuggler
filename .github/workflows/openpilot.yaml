@@ -5,7 +5,7 @@ on: [push, pull_request]
 env:
   ZIP: |
     cd $GITHUB_WORKSPACE/build/bin
-    sudo tar -czf plugins.tar.gz plotjuggler libDataLoadRlog.* libDataStreamCereal.*
+    sudo tar -czf $(uname -s)-$(uname -m).tar.gz plotjuggler libDataLoadRlog.* libDataStreamCereal.*
 
 jobs:
   build_ubuntu:
@@ -16,7 +16,7 @@ jobs:
       with:
         submodules: true
     - name: build
-      run: ./build.sh
+      run: echo "ZIP: $ZIP" && ./build.sh
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
@@ -41,6 +41,7 @@ jobs:
         python-version: '3.8.x'
     - name: setup dependencies
       run: |
+        echo "ZIP: $ZIP"
         brew install cmake bzip2 capnp qt@5 zeromq protobuf
         sudo pip3 install --no-cache-dir -r 3rdparty/opendbc/requirements.txt
     - name: build
