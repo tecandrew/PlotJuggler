@@ -20,20 +20,18 @@ jobs:
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
-      #if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: build/bin/plugins.tar.gz
-        asset_name: ubuntu-plugins.tar.gz
+        asset_name: ubuntu.tar.gz
         tag: "latest"
         overwrite: true
 
   build_mac:
     name: build mac
     runs-on: macOS-latest
-    env:
-      ARCH: "$(uname -m)"
     steps:
     - uses: actions/checkout@v2
       with:
@@ -53,11 +51,11 @@ jobs:
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
-      #if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
+      if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: build/bin/plugins.tar.gz
-        asset_name: mac-${{ env.ARCH }}-plugins.tar.gz
+        asset_name: mac-x86_64-plugins.tar.gz
         tag: "latest"
         overwrite: true
