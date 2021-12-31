@@ -18,9 +18,7 @@ jobs:
     - name: build
       run: ./build.sh
     - name: zip plugins
-      run: |
-        cd build/bin
-        $ZIP
+      run: eval "$ZIP"
     - name: upload
       #if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
       uses: svenstaro/upload-release-action@v2
@@ -50,7 +48,7 @@ jobs:
         export PYTHONPATH=$PWD/3rdparty
         mkdir -p build && cd build && cmake .. && make -j8
     - name: zip plugins
-      run: $ZIP
+      run: eval "$ZIP"
     - name: upload
       #if: github.ref == 'refs/heads/comma-master' && github.event_name == 'push'
       uses: svenstaro/upload-release-action@v2
