@@ -47,16 +47,14 @@ jobs:
       run: |
         export PYTHONPATH=$PWD/3rdparty
         mkdir -p build && cd build && cmake .. && make -j8
-    - name: get m1 binary
-      run: |
-        wget -P build/ https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
     - name: universal2 creation
       run: |
+        wget -P build/ https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
         cd build/ && mkdir darwin-arm64
         tar -xzf Darwin-arm64.tar.gz -C darwin-arm64
-        lipo -create bin/libDataLoadRlog.dylib darwin-arm64/libDataLoadRlog.dylib -output libDataLoadRlog.dylib
-        lipo -create bin/libDataStreamCereal.dylib darwin-arm64/libDataStreamCereal.dylib -output libDataStreamCereal.dylib
-        lipo -create bin/plotjuggler darwin-arm64/plotjuggler -output plotjuggler
+        lipo -create bin/libDataLoadRlog.dylib darwin-arm64/libDataLoadRlog.dylib -output bin/libDataLoadRlog.dylib
+        lipo -create bin/libDataStreamCereal.dylib darwin-arm64/libDataStreamCereal.dylib -output bin/libDataStreamCereal.dylib
+        lipo -create bin/plotjuggler darwin-arm64/plotjuggler -output bin/plotjuggler
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
