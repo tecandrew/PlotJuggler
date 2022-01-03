@@ -46,7 +46,9 @@ jobs:
     - name: build
       run: |
         export PYTHONPATH=$PWD/3rdparty
-        mkdir -p build && cd build && cmake .. -DCMAKE_OSX_ARCHITECTURES="x86_64" && make -j8 CFLAGS="-ferror-limit=0"
+        mkdir -p build && cd build
+        cmake .. -DCMAKE_OSX_ARCHITECTURES="x86_64" -DCMAKE_CXX_FLAGS="-ferror-limit=0" -DCMAKE_C_FLAGS="-ferror-limit=0" -DCMAKE_BUILD_TYPE=Release
+        CFLAGS="-ferror-limit=0" make -j8
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
