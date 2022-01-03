@@ -68,8 +68,8 @@ jobs:
       run: |
         wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
         wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-x86_64.tar.gz
-        cd && mkdir arm64 && tar -xzf Darwin-arm64.tar.gz -C arm64
-        cd && mkdir x86_64 && tar -xzf Darwin-x86_64.tar.gz -C x86_64
+        mkdir -P arm64 && tar -xzf Darwin-arm64.tar.gz -C arm64
+        mkdir -P x86_64 && tar -xzf Darwin-x86_64.tar.gz -C x86_64
     - name: build universal2
       run: |
         lipo -create arm64/libDataLoadRlog.dylib x86_64/libDataLoadRlog.dylib -output libDataLoadRlog.dylib
