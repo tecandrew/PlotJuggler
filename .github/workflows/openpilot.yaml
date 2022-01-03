@@ -46,7 +46,7 @@ jobs:
     - name: build
       run: |
         export PYTHONPATH=$PWD/3rdparty
-        mkdir -p build && cd build && cmake .. && make -j8 CFLAGS="-ferror-limit=0"
+        mkdir -p build && cd build && cmake .. -DCMAKE_OSX_ARCHITECTURES="x86_64" && make -j8 CFLAGS="-ferror-limit=0"
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
@@ -67,7 +67,7 @@ jobs:
   build_mac_universal2:
     needs: build_mac
     name: build universal 2
-    runs-on: macos-latest
+    runs-on: macos-latest # intel mac on GH actions
     steps:
     - name: get prev built x86_64
       uses: actions/download-artifact@v2
@@ -85,9 +85,9 @@ jobs:
         lipo -create arm64/libDataLoadRlog.dylib x86_64/libDataLoadRlog.dylib -output libDataLoadRlog.dylib
         lipo -create arm64/libDataStreamCereal.dylib x86_64/libDataStreamCereal.dylib -output libDataStreamCereal.dylib
         lipo -create arm64/plotjuggler x86_64/plotjuggler -output plotjuggler
-        lipo -archs plotjuggler
         lipo -archs libDataLoadRlog.dylib
         lipo -archs libDataStreamCereal.dylib
+        lipo -archs plotjuggler
     - name: zip plugins
       run: |
         cd $GITHUB_WORKSPACE
