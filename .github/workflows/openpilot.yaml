@@ -67,7 +67,7 @@ jobs:
     - name: get uploaded binaries
       run: |
         wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
-        wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-x86_86.tar.gz
+        wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-x86_64.tar.gz
         cd && mkdir arm64 && tar -xzf Darwin-arm64.tar.gz -C arm64
         cd && mkdir x86_64 && tar -xzf Darwin-x86_64.tar.gz -C x86_64
     - name: build universal2
