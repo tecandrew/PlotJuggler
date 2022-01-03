@@ -55,6 +55,7 @@ jobs:
         lipo -create bin/libDataLoadRlog.dylib darwin-arm64/libDataLoadRlog.dylib -output bin/libDataLoadRlog.dylib
         lipo -create bin/libDataStreamCereal.dylib darwin-arm64/libDataStreamCereal.dylib -output bin/libDataStreamCereal.dylib
         lipo -create bin/plotjuggler darwin-arm64/plotjuggler -output bin/plotjuggler
+        lipo -archs bin/plotjuggler
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
