@@ -47,7 +47,7 @@ jobs:
       run: |
         export PYTHONPATH=$PWD/3rdparty
         mkdir -p build && cd build && cmake .. && make -j8
-    - name: Fetch Github Release Asset
+    - name: get manually built m1 plugins
       uses: dsaltares/fetch-gh-release-asset@0.06
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
