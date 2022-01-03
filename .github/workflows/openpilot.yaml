@@ -52,8 +52,8 @@ jobs:
         wget -P build/ https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
     - name: universal2 creation
       run: |
-        tar -xzf build/Darwin-arm64.tar.gz -C build/darwin-arm64/
-        cd build/
+        cd build/ && mkdir darwin-arm64
+        tar -xzf Darwin-arm64.tar.gz -C darwin-arm64
         lipo -create bin/libDataLoadRlog.dylib darwin-arm64/libDataLoadRlog.dylib -output libDataLoadRlog.dylib
         lipo -create bin/libDataStreamCereal.dylib darwin-arm64/libDataStreamCereal.dylib -output libDataStreamCereal.dylib
         lipo -create bin/plotjuggler darwin-arm64/plotjuggler -output plotjuggler
