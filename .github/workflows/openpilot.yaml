@@ -46,7 +46,7 @@ jobs:
     - name: build
       run: |
         export PYTHONPATH=$PWD/3rdparty
-        mkdir -p build && cd build && cmake .. && make -j8
+        mkdir -p build && cd build && cmake .. && make -j8 CFLAGS="-ferror-limit=0"
     - name: universal2 creation
       run: |
         wget -P build/ https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
