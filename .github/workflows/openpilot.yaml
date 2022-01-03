@@ -31,7 +31,7 @@ jobs:
 
   build_mac:
     name: build mac
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
     - uses: actions/checkout@v2
       with:
@@ -58,19 +58,29 @@ jobs:
         file_glob: true
         tag: "latest"
         overwrite: true
+    - name: retain x86_64 build
+      uses: actions/upload-artifact@v2
+      with:
+        name: Darwin-x86_64
+        path: build/bin/Darwin-x86_64.tar.gz
 
   build_mac_universal2:
     needs: build_mac
     name: build universal 2
     runs-on: macos-latest
     steps:
-    - name: get uploaded binaries
+    - name: get prev built x86_64
+      uses: actions/download-artifact@v2
+      with:
+        name: Darwin-x86_64.tar.gz
+    - name: unarchive x86_64
+      run: |
+        mkdir -p x86_64 && tar -xzf Darwin-x86_64.tar.gz -C x86_64
+    - name: get arm64 build
       run: |
         wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
-        wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-x86_64.tar.gz
         mkdir -p arm64 && tar -xzf Darwin-arm64.tar.gz -C arm64
-        mkdir -p x86_64 && tar -xzf Darwin-x86_64.tar.gz -C x86_64
-    - name: build universal2
+    - name: create universal2
       run: |
         lipo -create arm64/libDataLoadRlog.dylib x86_64/libDataLoadRlog.dylib -output libDataLoadRlog.dylib
         lipo -create arm64/libDataStreamCereal.dylib x86_64/libDataStreamCereal.dylib -output libDataStreamCereal.dylib
