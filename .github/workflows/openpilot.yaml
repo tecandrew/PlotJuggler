@@ -61,7 +61,7 @@ jobs:
     - name: retain x86_64 build
       uses: actions/upload-artifact@v2
       with:
-        name: Darwin-x86_64
+        name: Darwin-x86_64.tar.gz
         path: build/bin/Darwin-x86_64.tar.gz
 
   build_mac_universal2:
