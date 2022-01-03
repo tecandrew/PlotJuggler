@@ -61,13 +61,13 @@ jobs:
 
   build_mac_universal2:
     needs: build_mac
-    name: build mac - universal 2
+    name: build universal 2
     runs-on: macos-latest
     steps:
-    - name: get arm64 and x86_64 binaries
+    - name: get uploaded binaries
       run: |
-        wget -P https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
-        wget -P https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-x86_86.tar.gz
+        wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-arm64.tar.gz
+        wget https://github.com/commaai/PlotJuggler/releases/download/latest/Darwin-x86_86.tar.gz
         cd && mkdir arm64 && tar -xzf Darwin-arm64.tar.gz -C arm64
         cd && mkdir x86_64 && tar -xzf Darwin-x86_64.tar.gz -C x86_64
     - name: build universal2
@@ -76,6 +76,8 @@ jobs:
         lipo -create arm64/libDataStreamCereal.dylib x86_64/libDataStreamCereal.dylib -output libDataStreamCereal.dylib
         lipo -create arm64/plotjuggler x86_64/plotjuggler -output plotjuggler
         lipo -archs plotjuggler
+        lipo -archs libDataLoadRlog.dylib
+        lipo -archs libDataStreamCereal.dylib
     - name: zip plugins
       run: |
         cd $GITHUB_WORKSPACE
