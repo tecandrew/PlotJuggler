@@ -141,6 +141,9 @@ else()
     set(GUI_TYPE WIN32)
 ENDIF()
 
+find_package(Rlog)
+find_package(Cereal)
+
 include_directories(
     ${Qt5Core_INCLUDE_DIRS}
     ${Qt5Widgets_INCLUDE_DIRS}
@@ -158,6 +161,9 @@ include_directories(
     ./3rdparty/lua-5.4.3/src
     ./3rdparty/QCodeEditor/include
     ./3rdparty/lz4
+    ./3rdparty/opendbc/can
+    ./3rdparty/cereal/messaging
+    ./3rdparty/cereal
 )
 
 #########################  BASE library  ####################################
@@ -320,3 +326,6 @@ if(NOT COMPILING_WITH_AMENT AND NOT COMPILING_WITH_CATKIN)
     )
 
 endif()
+
+add_subdirectory( plotjuggler_plugins/DataLoadRlog )
+add_subdirectory( plotjuggler_plugins/DataStreamCereal )
