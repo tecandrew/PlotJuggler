@@ -44,10 +44,10 @@ jobs:
       run: |
         brew install cmake bzip2 capnp qt@5 zeromq protobuf gnu-tar
         sudo pip3 install --no-cache-dir -r 3rdparty/opendbc/requirements.txt
-    - name: build
+    - name: build PJ plugins
       run: |
         export PYTHONPATH=$PWD/3rdparty
-        mkdir -p build && cd build && cmake .. && make -j8
+        mkdir -p build && cd build && cmake .. -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" && make -j8s
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
