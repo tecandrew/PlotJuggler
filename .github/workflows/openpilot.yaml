@@ -37,16 +37,13 @@ jobs:
     - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v2
-      with:
-        python-version: '3.8.x'
-    - name: brew setup
-      run: |
-        brew install cmake bzip2 capnp qt@5 zeromq protobuf gnu-tar
     - uses: actions/setup-python@v4
       with:
         python-version: '3.8.x'
         cache: 'pip'
+    - name: brew setup
+      run: |
+        brew install cmake bzip2 capnp qt@5 zeromq protobuf gnu-tar
     - run: pip3 install --no-cache-dir -r $PWD/3rdparty/opendbc/requirements.txt
     - name: build PJ plugins
       run: |
