@@ -32,22 +32,32 @@ jobs:
 
   build_mac:
     name: build mac
-    runs-on: macOS-latest
+    runs-on: macos-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
       with:
         submodules: true
-    - uses: actions/setup-python@v2
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.8.x'
-    - name: setup dependencies
+        cache: 'pip'
+    - name: brew setup
       run: |
         brew install cmake bzip2 capnp qt@5 zeromq protobuf gnu-tar
-        sudo pip3 install --no-cache-dir -r 3rdparty/opendbc/requirements.txt
-    - name: build
+    - run: |
+        arch -arm64 pip3 install --no-cache-dir -r $PWD/3rdparty/opendbc/requirements.txt
+        which -a python3
+        python3 --version
+        lipo -archs $(which python3)
+        pip3 list
+    - name: build cereal
+      run: |
+        cd 3rdparty/cereal
+        scons
+    - name: build PJ plugins
       run: |
         export PYTHONPATH=$PWD/3rdparty
-        mkdir -p build && cd build && cmake .. && make -j8
+        mkdir -p build && cd build && cmake .. -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64" && make -j8s
     - name: zip plugins
       run: eval "$ZIP"
     - name: upload
